@@ -6,7 +6,44 @@ The idea behind this is to have the printer detect is maximum boundries and appl
 
 The End Print macro should work for all styles of printers (cartesian, corexz, corexy, delta, ect). 
 
-Make sure to update your slicer end gcode accordingly to use `END_PRINT`.
+## :warning: Required changes in your slicer :warning:
+You need to update your "End G-code" in your slicer to be able to send data from slicer to this macro. Click on the slicer you use below and read the instructions.
+
+<details>
+<summary>SuperSlicer</summary>
+In Superslicer go to "Printer settings" -> "Custom g-code" -> "Start G-code" and update it to:
+
+```
+END_PRINT
+```
+</details>
+<details>
+<summary>OrcaSlicer</summary>
+In OrcaSlicer go to "Printer settings" -> "Machine start g-code" and update it to:
+
+```
+END_PRINT
+```
+</details>
+<details>
+<summary>PrusaSlicer</summary>
+
+In PrusaSlicer go to "Printer settings" -> "Custom g-code" -> "Start G-code" and update it to:
+
+```
+END_PRINT
+```
+</details>
+<details>
+<summary>Cura</summary>
+
+In Cura go to "Settings" -> "Printer" -> "Manage printers" -> "Machine settings" -> "Start G-code" and update it to:
+
+```
+END_PRINT
+```
+</details>
+
 
 <b>Please note:</b> there are additional macros embedded within the End Print macro that call for LED status (https://github.com/julianschill/klipper-led_effect/blob/master/docs/LED_Effect.md).
 The LED macros have been commented out by default. 
