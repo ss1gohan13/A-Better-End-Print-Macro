@@ -1,6 +1,6 @@
 # A-Better-End-Print-Macro
 
-This was loosly based off of the idea from jontek2's "A better Print Start Macro" : https://github.com/jontek2/A-better-print_start-macro
+This was loosly based off of the idea from jontek2's [A better Print Start Macro](https://github.com/jontek2/A-better-print_start-macro)
 
 The idea behind this is to have the printer detect is maximum boundries and apply a percentage threashold for the Z axis to raise to if the Z axis gets with 20% of the maximum heigh threshold. 
 
@@ -45,8 +45,7 @@ END_PRINT
 </details>
 
 
-<b>Please note:</b> there are additional macros embedded within the End Print macro that call for LED status (https://github.com/julianschill/klipper-led_effect/blob/master/docs/LED_Effect.md).
-The LED macros have been commented out by default. 
+<b>Please note:</b> [julianschill's Klipper LED effects](https://github.com/julianschill/klipper-led_effect) are also listed within this macro. They have been commented out by default. If you have LEDs installed, and the plugin installed, feel free to uncomment them. 
 
 In addition to this, I had included delayed gcodes for a nevermore to remain running (if installed) for 5 mins to help scrub the air. As well as included a delayed gcode for LED status to update after 5 min to reflect the printer part status. 
 These have been commented out by default to avoid any errors for someone that does not have these installed. If you do have a nevermore, or LEDs, installed please feel free to uncomment these options. 
@@ -79,7 +78,6 @@ gcode:
   {% set z_safe = max_z - printer.toolhead.position.z %}
     {% endif %}
 
-  SET_FILAMENT_SENSOR SENSOR=filament_sensor ENABLE=0
   #Commence END_PRINT
 #  STATUS_COOLING
   M400 ; wait for buffer to clear
