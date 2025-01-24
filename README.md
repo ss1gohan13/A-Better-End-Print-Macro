@@ -131,3 +131,5 @@ Hungry for more macromania? Make sure to check out these awesome links.
 A big thank you to the Voron Communuity for helping make this macro. 
 
 ## Feedback
+
+If you have feedback please open an issue on github.
