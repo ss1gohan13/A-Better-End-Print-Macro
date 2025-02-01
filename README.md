@@ -108,7 +108,7 @@ gcode:
   SET_DISPLAY_TEXT MSG="Print finished!!"                       # Displays info
 #  STATUS_PART_READY
 #  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
-#  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=30
+#  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=65
 #  M84                                                           # Disable motors  ##CURRENTLY DISABLED THIS TO ALLOW THE IDLE TIMEOUT TIMER DISABLE THE MOTORS - PLEASE MAKE SURE YOUR HAVE AN IDLE TIMEOUT TIMER SET - FLUIDD OR MAINSAIL HAVE THESE BY DEFAULT
 ```  
 ```
