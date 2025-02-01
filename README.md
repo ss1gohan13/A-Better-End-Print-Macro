@@ -83,24 +83,33 @@ gcode:
 
   #Commence END_PRINT
 #  STATUS_COOLING
-  M400 ; wait for buffer to clear
-  G92 E0 ; zero the extruder
-  G1 E-4.0 F3600 ; retract
-  G91 ; relative positioning
-  G0 Z{z_safe} F3600 ; move nozzle up
-  M104 S0 ; turn off hotend
-  M140 S0 ; turn off bed
-  M106 S0 ; turn off fan
-  M107 ; turn off part cooling fan
-  G90 ; absolute positioning
-  G1 X{min_x} Y{max_y} F2000 ; move nozzle and present
-#  SET_DISPLAY_TEXT MSG="Scrubbing air..."          # Displays info
-#  SET_PIN PIN=nevermore VALUE=0                      # Turns off the nevermore
+  M400                                                           # wait for buffer to clear
+  G92 E0                                                         # zero the extruder
+  G1 E-4.0 F3600                                                 # retract
+  G91                                                            # relative positioning
+  G0 Z{z_safe} F3600                                             # move nozzle up
+  M104 S0                                                        # turn off hotend
+  M140 S0                                                        # turn off bed
+  M106 S0                                                        # turn off fan
+  M107                                                           # turn off part cooling fan
+  G90                                                            # absolute positioning
+  G1 X{min_x} Y{max_y} F2000                                     # move nozzle and present
+
+  # Safe Z-drop if near maximum height (after parking)
+  {% if printer.toolhead.position.z > (max_z - 20) %}
+    G91                                                          # relative positioning
+    G1 Z-10 F1200                                                # drop 10mm if near the top
+    G90                                                          # back to absolute
+  {% endif %}
+
+#  SET_DISPLAY_TEXT MSG="Scrubbing air..."                       # Displays info
+#  SET_PIN PIN=nevermore VALUE=0                                 # Turns off the nevermore
 #  UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=300
-  SET_DISPLAY_TEXT MSG="Print finished!!"            # Displays info
+#  SET_DISPLAY_TEXT MSG="Print finished!!"                       # Displays info
 #  STATUS_PART_READY
-#  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
-#  M84 # Disable motors  ##CURRENTLY DISABLED THIS TO ALLOW THE IDLE TIMEOUT TIMER DISABLE THE MOTORS - PLEASE MAKE SURE YOUR HAVE AN IDLE TIMEOUT TIMER SET - FLUIDD OR MAINSAIL HAVE THESE BY DEFAULT
+  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
+  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=30
+#  M84                                                           # Disable motors  ##CURRENTLY DISABLED THIS TO ALLOW THE IDLE TIMEOUT TIMER DISABLE THE MOTORS - PLEASE MAKE SURE YOUR HAVE AN IDLE TIMEOUT TIMER SET - FLUIDD OR MAINSAIL HAVE THESE BY DEFAULT
 ```
 ```
 [delayed_gcode set_ready_status]
@@ -118,6 +127,8 @@ gcode:
 
 Hungry for more macromania? Make sure to check out these awesome links.
 
+- [A Better Start Print Macro](https://github.com/ss1gohan13/A-better-print_start-macro-SV08)
+- [More replacement SV08 Macros](https://github.com/ss1gohan13/SV08-Replacement-Macros)
 - [Mjonuschat optimized bed leveling macros for](https://mjonuschat.github.io/voron-mods/docs/guides/optimized-bed-leveling-macros/)
 - [Ellis Useful Macros](https://ellis3dp.com/Print-Tuning-Guide/articles/index_useful_macros.html)
 - [Voron Klipper Macros](https://github.com/The-Conglomerate/Voron-Klipper-Common/)
