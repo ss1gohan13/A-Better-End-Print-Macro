@@ -12,7 +12,7 @@ The idea behind this is to have the printer detect is maximum boundries and appl
 The End Print macro should work for all styles of printers (cartesian, corexz, corexy, delta, ect). 
 
 ## :warning: Required changes in your slicer :warning:
-You need to update your "End G-code" in your slicer to be able to send data from slicer to this macro. Click on the slicer you use below and read the instructions.
+You need to replace your "End G-code" in your slicer to be able to send data from slicer to this macro. Click on the slicer you use below and read the instructions.
 
 <details>
 <summary>SuperSlicer</summary>
@@ -105,12 +105,12 @@ gcode:
 #  SET_DISPLAY_TEXT MSG="Scrubbing air..."                       # Displays info
 #  SET_PIN PIN=nevermore VALUE=0                                 # Turns off the nevermore
 #  UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=300
-#  SET_DISPLAY_TEXT MSG="Print finished!!"                       # Displays info
+  SET_DISPLAY_TEXT MSG="Print finished!!"                       # Displays info
 #  STATUS_PART_READY
-  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
-  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=30
+#  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
+#  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=30
 #  M84                                                           # Disable motors  ##CURRENTLY DISABLED THIS TO ALLOW THE IDLE TIMEOUT TIMER DISABLE THE MOTORS - PLEASE MAKE SURE YOUR HAVE AN IDLE TIMEOUT TIMER SET - FLUIDD OR MAINSAIL HAVE THESE BY DEFAULT
-```
+```  
 ```
 [delayed_gcode set_ready_status]
 gcode:
@@ -121,6 +121,7 @@ gcode:
 gcode:
   SET_PIN PIN=nevermore VALUE=0                      # Turns off the nevermore
 ```
+
 </details>
 
 ## Interested in more macros?
