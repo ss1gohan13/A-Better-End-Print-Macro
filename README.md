@@ -127,7 +127,7 @@ gcode:
 
 Hungry for more macromania? Make sure to check out these awesome links.
 
-- [A Better Start Print Macro](https://github.com/ss1gohan13/A-better-print_start-macro-SV08)
+- [A Better Start Print Macro-SV08 Edition](https://github.com/ss1gohan13/A-better-print_start-macro-SV08)
 - [More replacement SV08 Macros](https://github.com/ss1gohan13/SV08-Replacement-Macros)
 - [Mjonuschat optimized bed leveling macros for](https://mjonuschat.github.io/voron-mods/docs/guides/optimized-bed-leveling-macros/)
 - [Ellis Useful Macros](https://ellis3dp.com/Print-Tuning-Guide/articles/index_useful_macros.html)
