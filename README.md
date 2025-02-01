@@ -118,7 +118,7 @@ gcode:
 ```
 [delayed_gcode set_ready_status]
 gcode:
-  STATUS_READY
+  STATUS_READY                                       # # Sets SB-LEDs to ready-mode
 ```
 ```
 [delayed_gcode turn_off_nevermore]
