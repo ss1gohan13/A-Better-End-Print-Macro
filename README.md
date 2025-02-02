@@ -109,7 +109,7 @@ gcode:
 #  SET_DISPLAY_TEXT MSG="Scrubbing air..."                       # Displays info
 #  SET_PIN PIN=nevermore VALUE=0                                 # Turns off the nevermore
 #  UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=300
-  SET_DISPLAY_TEXT MSG="Print finished!!"                       # Displays info
+  M117 Print finished!!                                         # Displays info on LCD
 #  STATUS_PART_READY
 #  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
 #  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=65
