@@ -60,13 +60,13 @@ END_PRINT
 
 [gcode_macro END_PRINT]
 gcode:
-  #Get Boundaries
+  # Get Boundaries
   {% set max_x = printer.configfile.config["stepper_x"]["position_max"]|float %}
   {% set max_y = printer.configfile.config["stepper_y"]["position_max"]|float %}
   {% set max_z = printer.configfile.config["stepper_z"]["position_max"]|float %}
   {% set min_x = printer.configfile.config["stepper_x"]["position_endstop"]|float %}
 
-  #Check end position to determine safe directions to move
+  # Check end position to determine safe directions to move
   {% if printer.toolhead.position.x < (max_x - 20) %}
       {% set x_safe = 20.0 %}
     {% else %}
@@ -82,11 +82,11 @@ gcode:
   {% if printer.toolhead.position.z < (max_z - 2) %}
       {% set z_safe = 2.0 %}
     {% else %}
-  {% set z_safe = max_z - printer.toolhead.position.z %}
+      {% set z_safe = max_z - printer.toolhead.position.z %}
     {% endif %}
 
-  #Commence END_PRINT
-#  STATUS_COOLING
+  # Commence END_PRINT
+  # STATUS_COOLING
   M400                                                           # wait for buffer to clear
   G92 E0                                                         # zero the extruder
   G1 E-4.0 F3600                                                 # retract
@@ -102,18 +102,21 @@ gcode:
   # Safe Z-drop if near maximum height (after parking)
   {% if printer.toolhead.position.z > (max_z - 20) %}
     G91                                                          # relative positioning
-    G1 Z-10 F600                                                # drop 10mm if near the top
+    G1 Z-10 F600                                                 # drop 10mm if near the top
     G90                                                          # back to absolute
   {% endif %}
 
-#  SET_DISPLAY_TEXT MSG="Scrubbing air..."                       # Displays info
-#  SET_PIN PIN=nevermore VALUE=0                                 # Turns off the nevermore
-#  UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=300
-  M117 Print finished!!                                         # Displays info on LCD
-#  STATUS_PART_READY
-#  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60
-#  UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=65
-#  M84                                                           # Disable motors  ##CURRENTLY DISABLED THIS TO ALLOW THE IDLE TIMEOUT TIMER DISABLE THE MOTORS - PLEASE MAKE SURE YOUR HAVE AN IDLE TIMEOUT TIMER SET - FLUIDD OR MAINSAIL HAVE THESE BY DEFAULT
+  # Conditional check for nevermore pin
+  {% if 'nevermore' in printer.configfile.settings %}
+    SET_PIN PIN=nevermore VALUE=1                                 # Keep the nevermore running
+    UPDATE_DELAYED_GCODE ID=check_nevermore_status DURATION=300   # Schedule to check the nevermore status after 5 minutes
+  {% endif %}
+
+  M117 Print finished!!                                          # Displays info on LCD
+  # STATUS_PART_READY
+  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60            # Schedule ready status
+  # UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=65
+  # M84                                                           # Disable motors (currently disabled to allow idle timeout)
 ```  
 ```
 [delayed_gcode set_ready_status]
@@ -121,9 +124,13 @@ gcode:
   STATUS_READY                                       # # Sets SB-LEDs to ready-mode
 ```
 ```
-[delayed_gcode turn_off_nevermore]
+[delayed_gcode check_nevermore_status]
 gcode:
-  SET_PIN PIN=nevermore VALUE=0                      # Turns off the nevermore
+  {% if 'nevermore' in printer.configfile.settings and printer.print_stats.state == 'idle' %}
+    SET_PIN PIN=nevermore VALUE=0                                 # Turns off the nevermore if the printer is idle
+  {% else %}
+    UPDATE_DELAYED_GCODE ID=check_nevermore_status DURATION=60    # Recheck after 1 minute if not idle
+  {% endif %}
 ```
 
 </details>
