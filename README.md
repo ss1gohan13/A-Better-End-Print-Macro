@@ -7,7 +7,10 @@ This was loosly based off of the idea from jontek2's [A better Print Start Macro
 In addition to this, I had included delayed gcodes for a nevermore to remain running (if installed) for 5 mins to help scrub the air. As well as included a delayed gcode for LED status to update after 5 min to reflect the printer part status. 
 These have been commented out by default to avoid any errors for someone that does not have these installed. If you do have a nevermore, or LEDs, installed please feel free to uncomment these options. 
 
-The idea behind this is to have the printer detect is maximum boundries and apply a percentage threashold for the Z axis to raise to if the Z axis gets with 20% of the maximum heigh threshold. 
+The idea behind this end print macro:
+- have the printer detect is maximum z boundries
+- apply a percentage threashold for the Z axis to raise to if the Z axis gets with 20% of the maximum heigh threshold.
+- if z reached the 20% boundry, limits the z lift at end of the print and also then lowers the toolhead 10mm so next unknown home doesn't slam into top of Z
 
 The End Print macro should work for all styles of printers (cartesian, corexz, corexy, delta, ect). 
 
