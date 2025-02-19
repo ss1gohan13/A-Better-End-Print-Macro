@@ -12,4 +12,4 @@ cd ~ || {
 }
 
 # Get the raw content directly from GitHub and pipe it to bash
-curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-better-print_start-macro-SV08/main/install_end_print.sh | bash
+curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/blob/main/install_end_print.sh | bash
