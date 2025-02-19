@@ -59,8 +59,7 @@ END_PRINT
 
 ```
 cd ~
-
-curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/blob/main/direct_install.sh | bash
+curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/main/direct_install.sh | bash
 ```
 
 </details>
