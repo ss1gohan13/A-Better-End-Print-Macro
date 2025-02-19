@@ -2,7 +2,7 @@
 #####################################################################
 # Direct installation script for END_PRINT macro
 # Author: ss1gohan13
-# Created: 2025-02-19 15:47:06 UTC
+# Created: 2025-02-19 16:10:52 UTC
 #####################################################################
 
 # Change to home directory first
@@ -12,4 +12,4 @@ cd ~ || {
 }
 
 # Get the raw content directly from GitHub and pipe it to bash
-curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/blob/main/install_end_print.sh | bash
+curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/main/install_end_print.sh | bash
