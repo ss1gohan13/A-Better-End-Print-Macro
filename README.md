@@ -55,6 +55,17 @@ END_PRINT
 # END_PRINT Macro
 
 <details>
+<summary>Auto Install Script</summary>
+
+```
+cd ~
+
+curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/blob/main/install_end_print.sh | bash
+```
+
+</details>
+
+<details>
 
 ```
 #####################################################################
