@@ -2,8 +2,8 @@
 #####################################################################
 # END_PRINT Macro Installation Script for Klipper
 # Author: ss1gohan13
-# Created: 2025-02-19 15:47:06 UTC
-# Repository: https://github.com/ss1gohan13/A-better-print_start-macro-SV08
+# Created: 2025-02-19 16:13:54 UTC
+# Repository: https://github.com/ss1gohan13/A-Better-End-Print-Macro
 #####################################################################
 
 # Configuration
