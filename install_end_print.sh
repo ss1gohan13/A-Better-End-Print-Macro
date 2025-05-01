@@ -100,7 +100,7 @@ main() {
     # Append new END_PRINT macro
     cat >> "$macro_path" << 'EOL'
 #####################################################################
-#   A better end_print macro
+#-------------------- A better End Print macro ---------------------#
 #####################################################################
 
 [gcode_macro END_PRINT]
