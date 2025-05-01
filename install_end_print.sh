@@ -103,6 +103,10 @@ main() {
 #-------------------- A better End Print macro ---------------------#
 #####################################################################
 
+#####################################################################
+#-------------------- A better End Print macro ---------------------#
+#####################################################################
+
 [gcode_macro END_PRINT]
 gcode:
   # Get Boundaries
@@ -151,17 +155,29 @@ gcode:
     G90                                                          # back to absolute
   {% endif %}
 
-  # Conditional check for nevermore pin
-  {% if 'nevermore' in printer.configfile.settings %}
-    SET_PIN PIN=nevermore VALUE=1                                 # Keep the nevermore running
-    UPDATE_DELAYED_GCODE ID=check_nevermore_status DURATION=300   # Schedule to check the nevermore status after 5 minutes
+
+    # UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60            # Schedule ready status
+    # Conditional check for nevermore pin
+  {% if printer["output_pin nevermore"] is defined %}
+    UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=120   # Schedule to check the nevermore status after 2 minutes
+  {% endif %}
+    UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=125        # Schedule reset status
+    
+# M84                                                           # Disable motors (currently disabled to allow idle timeout)
+
+[delayed_gcode reset_printer_status]
+gcode:
+    SDCARD_RESET_FILE
+
+[delayed_gcode turn_off_nevermore]
+gcode:
+  {% if printer["output_pin nevermore"] is defined %}
+    SET_PIN PIN=nevermore VALUE=0  # Turns off the nevermore unconditionally after the delay
   {% endif %}
 
-  M117 Print finished!!                                          # Displays info on LCD
-  # STATUS_PART_READY
-  UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60            # Schedule ready status
-  # UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=65
-  # M84                                                           # Disable motors (currently disabled to allow idle timeout)
+[delayed_gcode set_ready_status]
+gcode:
+  STATUS_READY
 EOL
     
     # Add include to printer.cfg if needed
