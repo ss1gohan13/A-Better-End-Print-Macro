@@ -68,7 +68,7 @@ curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/
 
 ```
 #####################################################################
-#   A better end_print macro
+#-------------------- A better End Print macro ---------------------#
 #####################################################################
 
 [gcode_macro END_PRINT]
