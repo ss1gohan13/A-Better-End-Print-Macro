@@ -73,61 +73,68 @@ curl -sSL https://raw.githubusercontent.com/ss1gohan13/A-Better-End-Print-Macro/
 
 [gcode_macro END_PRINT]
 gcode:
-  # Get Boundaries
-  {% set max_x = printer.configfile.config["stepper_x"]["position_max"]|float %}
-  {% set max_y = printer.configfile.config["stepper_y"]["position_max"]|float %}
-  {% set max_z = printer.configfile.config["stepper_z"]["position_max"]|float %}
-  {% set min_x = printer.configfile.config["stepper_x"]["position_endstop"]|float %}
+	# Get Boundaries
+	{% set max_x = printer.configfile.config["stepper_x"]["position_max"]|float %}
+	{% set max_y = printer.configfile.config["stepper_y"]["position_max"]|float %}
+	{% set max_z = printer.configfile.config["stepper_z"]["position_max"]|float %}
+	
+	# Set safety margins (5% from edges)
+	{% set x_margin = max_x * 0.05 %}
+	{% set y_margin = max_y * 0.05 %}
+	
+	# Calculate safe parking positions
+	{% set safe_x = x_margin %}               # 5% from X=0
+	{% set safe_y = max_y - y_margin %}       # 5% from max Y
+	
+	# Check end position to determine safe directions to move
+	{% if printer.toolhead.position.x < (max_x - 20) %}
+		{% set x_safe = 20.0 %}
+	{% else %}
+		{% set x_safe = -20.0 %}
+	{% endif %}
 
-  # Check end position to determine safe directions to move
-  {% if printer.toolhead.position.x < (max_x - 20) %}
-      {% set x_safe = 20.0 %}
-    {% else %}
-      {% set x_safe = -20.0 %}
-    {% endif %}
+	{% if printer.toolhead.position.y < (max_y - 20) %}
+		{% set y_safe = 20.0 %}
+	{% else %}
+		{% set y_safe = -20.0 %}
+	{% endif %}
 
-  {% if printer.toolhead.position.y < (max_y - 20) %}
-      {% set y_safe = 20.0 %}
-    {% else %}
-      {% set y_safe = -20.0 %}
-    {% endif %}
+	{% if printer.toolhead.position.z < (max_z - 2) %}
+		{% set z_safe = 2.0 %}
+	{% else %}
+		{% set z_safe = max_z - printer.toolhead.position.z %}
+	{% endif %}
 
-  {% if printer.toolhead.position.z < (max_z - 2) %}
-      {% set z_safe = 2.0 %}
-    {% else %}
-      {% set z_safe = max_z - printer.toolhead.position.z %}
-    {% endif %}
+	# Commence END_PRINT
+	M400                                                          # wait for buffer to clear
+	G92 E0                                                        # zero the extruder
+	G1 E-3.0 F1800                                               # retract
+	G91                                                          # relative positioning
+	G0 Z{z_safe} F3600                                           # move nozzle up
+	M104 S0                                                      # turn off hotend
+	M140 S0                                                      # turn off bed
+	M106 S0                                                      # turn off fan
+	M107                                                         # turn off part cooling fan
+	G90                                                          # absolute positioning
+	G1 X{safe_x} Y{safe_y} F2000                                 # move to safe front position
 
-  # Commence END_PRINT
-  # STATUS_COOLING
-  M400                                                           # wait for buffer to clear
-  G92 E0                                                         # zero the extruder
-  G1 E-4.0 F3600                                                 # retract
-  G91                                                            # relative positioning
-  G0 Z{z_safe} F3600                                             # move nozzle up
-  M104 S0                                                        # turn off hotend
-  M140 S0                                                        # turn off bed
-  M106 S0                                                        # turn off fan
-  M107                                                           # turn off part cooling fan
-  G90                                                            # absolute positioning
-  G1 X{min_x} Y{max_y} F2000                                     # move nozzle and present
+	# Safe Z-drop if near maximum height (after parking)
+	{% if printer.toolhead.position.z > (max_z - 20) %}
+		G91                                                        # relative positioning
+		G1 Z-10 F600                                               # drop 10mm if near the top
+		G90                                                        # back to absolute
+	{% endif %}
 
-  # Safe Z-drop if near maximum height (after parking)
-  {% if printer.toolhead.position.z > (max_z - 20) %}
-    G91                                                          # relative positioning
-    G1 Z-10 F600                                                 # drop 10mm if near the top
-    G90                                                          # back to absolute
-  {% endif %}
-
-
-    # UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60            # Schedule ready status
-    # Conditional check for nevermore pin
-  {% if printer["output_pin nevermore"] is defined %}
-    UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=120   # Schedule to check the nevermore status after 2 minutes
-  {% endif %}
-    UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=125        # Schedule reset status
-    
-# M84                                                           # Disable motors (currently disabled to allow idle timeout)
+	M117 Print finished!!                                        # Displays info on LCD
+	# STATUS_PART_READY
+	# PROBE_EDGY_NG_SET_TAP_OFFSET VALUE=0
+	# UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60         # Schedule ready status
+	{% if printer["output_pin nevermore"] is defined %}          # Conditional check for nevermore pin
+		UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=120    # Schedule to check the nevermore status after 2 minutes
+	{% endif %}
+	UPDATE_DELAYED_GCODE ID=reset_printer_status DURATION=125    # Schedule reset status
+	
+	# M84                                                        # Disable motors (currently disabled to allow idle timeout)F
 
 [delayed_gcode reset_printer_status]
 gcode:
