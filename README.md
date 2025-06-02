@@ -142,9 +142,7 @@ gcode:
 
 [delayed_gcode turn_off_nevermore]
 gcode:
-  {% if printer["output_pin nevermore"] is defined %}
     SET_PIN PIN=nevermore VALUE=0  # Turns off the nevermore unconditionally after the delay
-  {% endif %}
 
 [delayed_gcode set_ready_status]
 gcode:
