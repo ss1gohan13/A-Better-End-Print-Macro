@@ -127,7 +127,7 @@ gcode:
 
 	M117 Print finished!!                                        # Displays info on LCD
 	# STATUS_PART_READY
-	# PROBE_EDGY_NG_SET_TAP_OFFSET VALUE=0
+	# PROBE_EDDY_NG_SET_TAP_OFFSET VALUE=0
 	# UPDATE_DELAYED_GCODE ID=set_ready_status DURATION=60         # Schedule ready status
 	{% if printer["output_pin nevermore"] is defined %}          # Conditional check for nevermore pin
 		UPDATE_DELAYED_GCODE ID=turn_off_nevermore DURATION=120    # Schedule to check the nevermore status after 2 minutes
