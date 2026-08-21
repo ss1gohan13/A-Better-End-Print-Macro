@@ -138,7 +138,9 @@ gcode:
 
 [delayed_gcode reset_printer_status]
 gcode:
-    SDCARD_RESET_FILE
+    {% if not printer.virtual_sdcard.is_active %}
+        SDCARD_RESET_FILE
+    {% endif %}
 
 [delayed_gcode turn_off_nevermore]
 gcode:
